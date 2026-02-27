@@ -1,0 +1,372 @@
+:root {
+  --gold: #b8863a;
+  --text-dark: #2d3561;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  position: relative;
+  background: #f5f0ff;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, #ffd6e0 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, #d6e8ff 0%, transparent 50%), #f5f0ff;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 36px;
+}
+
+#title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 28px;
+  min-height: 48px;
+  transition: opacity 0.3s;
+}
+
+.input-row {
+  display: flex;
+  gap: 12px;
+  width: 85%;
+  align-items: center;
+  margin-bottom: 16px;
+  position: relative;
+  transition: opacity 0.15s;
+}
+#thinking-dots {
+  position: absolute;
+  top: -10px;
+  left: 190px;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #9b8db0;
+  opacity: 0;
+  letter-spacing: 6px;
+  transition: opacity 0.3s;
+}
+
+#thinking-dots.visible {
+  opacity: 1;
+  animation: blinkDots 1s infinite;
+}
+
+@keyframes blinkDots {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+#question-input {
+  flex: 1;
+  padding: 12px 18px;
+  border: 2px solid var(--gold);
+  border-radius: 50px;
+  font-size: 1rem;
+  font-family: "Quicksand", sans-serif;
+  color: var(--text-dark);
+  background: white;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+#question-input:focus {
+  box-shadow: 0 0 0 3px rgba(184, 134, 58, 0.2);
+}
+
+#ask-btn {
+  background: var(--gold);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Nunito", sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.1s;
+}
+#ask-btn:hover {
+  transform: scale(1.04);
+}
+#ask-btn.falling {
+  animation: btnFall 0.7s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+@keyframes btnFall {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(280px) scale(0.8);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(480px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+#question-display {
+  background: white;
+  border: 2px solid var(--gold);
+  border-radius: 50px;
+  padding: 10px 22px;
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  opacity: 0;
+  max-width: 82%;
+  margin-bottom: 10px;
+  transition: opacity 0.4s;
+}
+#question-display.visible {
+  opacity: 1;
+}
+
+/* ── CAT SCENE ── */
+.cat-scene {
+  position: relative;
+  width: 400px;
+  height: 310px;
+  margin-top: 0;
+}
+
+.cat-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* eye toggle */
+.eye-closed {
+  display: block;
+}
+.eye-open {
+  display: none;
+}
+#cat-eyes.open .eye-closed {
+  display: none;
+}
+#cat-eyes.open .eye-open {
+  display: block;
+}
+
+/* tail wag */
+@keyframes tailWag {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(14deg);
+  }
+  75% {
+    transform: rotate(-14deg);
+  }
+}
+#cat-tail.wagging {
+  transform-origin: 122px 288px;
+  animation: tailWag 0.38s ease-in-out 4;
+}
+
+/* meow */
+#meow-text {
+  position: absolute;
+  top: 14px;
+  left: 50px;
+  font-family: "Nunito", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  text-shadow: 0 4px 12px rgba(155, 141, 176, 0.4);
+  color: #9b8db0;
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: rotate(-12deg) scale(0.4);
+  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+#meow-text.visible {
+  opacity: 1;
+  transform: rotate(-12deg) scale(1);
+}
+
+/* btn ball */
+#btn-ball {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+#btn-ball.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* TIP SECTION */
+#tip-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  text-align: center;
+  margin-top: 16px;
+  pointer-events: none;
+}
+#tip-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+#tip-section h3 {
+  font-family: "Nunito", sans-serif;
+  color: var(--text-dark);
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+}
+.tip-options {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tip-btn {
+  padding: 10px 22px;
+  border-radius: 50px;
+  border: 2px solid var(--gold);
+  background: white;
+  color: var(--text-dark);
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tip-btn:hover {
+  background: var(--gold);
+  color: white;
+  transform: scale(1.06);
+}
+
+/* REWARD */
+#reward {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+#reward.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+#reward-card {
+  background: white;
+  border-radius: 24px;
+  padding: 40px 50px;
+  text-align: center;
+  max-width: 340px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: scale(0.8);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+#reward.visible #reward-card {
+  transform: scale(1);
+}
+#reward-emoji {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 12px;
+}
+#reward-msg {
+  font-family: "Nunito", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+#reward-sub {
+  font-family: "Quicksand", sans-serif;
+  color: #888;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+#reward-close {
+  background: var(--gold);
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 50px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Confetti / hearts */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+}
+.heart-particle {
+  position: fixed;
+  font-size: 1.5rem;
+  pointer-events: none;
+  z-index: 98;
+  animation: floatUp 1.5s ease-out forwards;
+}
+@keyframes floatUp {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-150px) scale(1.5);
+  }
+}

@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ask Cat</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Quicksand:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+      <div id="title">Ask Cat anything you wish</div>
+
+      <div id="question-display"></div>
+
+      <div class="input-row" id="input-row">
+        <input
+          id="question-input"
+          type="text"
+          placeholder="Typing your question here..."
+        />
+        <button id="ask-btn" onclick="startJourney()">Ask Cat</button>
+      </div>
+
+      <!-- ── CAT ── -->
+      <div class="cat-scene" id="cat-scene">
+        <div id="meow-text">meow ✨</div>
+        <div id="thinking-dots">...</div>
+        <div id="btn-ball"></div>
+
+        <svg
+          class="cat-svg"
+          viewBox="0 0 400 310"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <radialGradient id="bodyGrad" cx="45%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="#E4BA7A" />
+              <stop offset="100%" stop-color="#C8924E" />
+            </radialGradient>
+            <radialGradient id="headGrad" cx="45%" cy="38%" r="60%">
+              <stop offset="0%" stop-color="#E4BA7A" />
+              <stop offset="100%" stop-color="#C8924E" />
+            </radialGradient>
+          </defs>
+
+          <!-- ░░ TAIL (drawn first, behind body) ░░ -->
+          <!-- thick base stroke -->
+          <g transform="translate(20,0)">
+            <g id="cat-tail">
+              <path
+                d="M 122 288 Q 52 252 40 200 Q 32 158 68 144 Q 92 136 98 158"
+                fill="none"
+                stroke="#B87A30"
+                stroke-width="26"
+                stroke-linecap="round"
+              />
+              <!-- mid tone -->
+              <path
+                d="M 122 288 Q 52 252 40 200 Q 32 158 68 144 Q 92 136 98 158"
+                fill="none"
+                stroke="#D4A050"
+                stroke-width="16"
+                stroke-linecap="round"
+              />
+              <!-- highlight -->
+              <path
+                d="M 122 288 Q 52 252 40 200 Q 32 158 68 144 Q 92 136 98 158"
+                fill="none"
+                stroke="#E8C070"
+                stroke-width="6"
+                stroke-linecap="round"
+                opacity="0.55"
+              />
+              <!-- tip fluff: small circle -->
+              <circle cx="97" cy="157" r="13" fill="#D4A050" />
+              <circle cx="97" cy="157" r="7" fill="#E8C070" opacity="0.5" />
+            </g>
+          </g>
+
+          <!-- ░░ BODY ░░ -->
+          <ellipse cx="200" cy="248" rx="86" ry="66" fill="url(#bodyGrad)" />
+          <!-- belly lighter -->
+          <ellipse
+            cx="202"
+            cy="268"
+            rx="46"
+            ry="44"
+            fill="#EDCA88"
+            opacity="0.35"
+          />
+
+          <!-- ░░ LEFT EAR — tilted outward ~-30deg ░░ -->
+          <g transform="rotate(15, 144, 178)">
+            <!-- outer ear -->
+            <polygon points="144,162 114,106 174,114" fill="#A87830" />
+            <!-- inner ear pink -->
+            <polygon
+              points="144,156 124,116 164,122"
+              fill="#E89090"
+              opacity="0.6"
+            />
+          </g>
+
+          <!-- ░░ RIGHT EAR — tilted outward ~+30deg ░░ -->
+          <g transform="rotate(-25, 260, 150)">
+            <polygon points="256,162 226,106 286,114" fill="#A87830" />
+            <polygon
+              points="256,156 236,116 276,122"
+              fill="#E89090"
+              opacity="0.6"
+            />
+          </g>
+
+          <!-- ░░ HEAD ░░ -->
+          <ellipse cx="200" cy="198" rx="80" ry="74" fill="url(#headGrad)" />
+          <!-- forehead lighter spot -->
+          <ellipse
+            cx="200"
+            cy="178"
+            rx="38"
+            ry="28"
+            fill="#EDD090"
+            opacity="0.3"
+          />
+
+          <!-- ░░ EYES ░░ -->
+          <g id="cat-eyes">
+            <!-- closed left -->
+            <g class="eye-closed">
+              <rect
+                x="159"
+                y="194"
+                width="24"
+                height="6"
+                rx="3"
+                fill="#2d3561"
+              />
+            </g>
+            <!-- open left -->
+            <g class="eye-open">
+              <circle cx="171" cy="197" r="12" fill="#2d3561" />
+              <circle cx="174" cy="193" r="4" fill="white" opacity="0.6" />
+            </g>
+
+            <!-- closed right -->
+            <g class="eye-closed">
+              <rect
+                x="217"
+                y="194"
+                width="24"
+                height="6"
+                rx="3"
+                fill="#2d3561"
+              />
+            </g>
+            <!-- open right -->
+            <g class="eye-open">
+              <circle cx="229" cy="197" r="12" fill="#2d3561" />
+              <circle cx="232" cy="193" r="4" fill="white" opacity="0.6" />
+            </g>
+          </g>
+
+          <!-- ░░ NOSE + mouth ░░ -->
+          <polygon
+            points="200,212 195,219 205,219"
+            fill="#C87070"
+            opacity="0.85"
+          />
+          <path
+            d="M 195 219 Q 200 225 205 219"
+            fill="none"
+            stroke="#C87070"
+            stroke-width="1.5"
+            opacity="0.6"
+          />
+
+          <!-- ░░ WHISKERS ░░ -->
+          <line
+            x1="162"
+            y1="212"
+            x2="118"
+            y2="207"
+            stroke="#2d3561"
+            stroke-width="1.3"
+            opacity="0.25"
+          />
+          <line
+            x1="162"
+            y1="217"
+            x2="116"
+            y2="219"
+            stroke="#2d3561"
+            stroke-width="1.3"
+            opacity="0.25"
+          />
+          <line
+            x1="162"
+            y1="222"
+            x2="120"
+            y2="229"
+            stroke="#2d3561"
+            stroke-width="1.3"
+            opacity="0.25"
+          />
+          <line
+            x1="238"
+            y1="212"
+            x2="282"
+            y2="207"
+            stroke="#2d3561"
+            stroke-width="1.3"
+            opacity="0.25"
+          />
+          <line
+            x1="238"
+            y1="217"
+            x2="284"
+            y2="219"
+            stroke="#2d3561"
+            stroke-width="1.3"
+            opacity="0.25"
+          />
+          <line
+            x1="238"
+            y1="222"
+            x2="280"
+            y2="229"
+            stroke="#2d3561"
+            stroke-width="1.3"
+            opacity="0.25"
+          />
+
+          <!-- ░░ SERVICE BELL ░░ -->
+          <g transform="translate(316, 256)">
+            <!-- bell dome -->
+            <path d="M -20,4 Q -22,-18 0,-24 Q 22,-18 20,4 Z" fill="#C89B40" />
+            <rect x="-20" y="4" width="40" height="9" rx="3" fill="#A87A28" />
+            <!-- bell slit -->
+            <rect x="-3" y="-26" width="6" height="12" rx="2" fill="#906820" />
+            <!-- shine -->
+            <ellipse
+              cx="-6"
+              cy="-12"
+              rx="5"
+              ry="4"
+              fill="white"
+              opacity="0.18"
+            />
+            <!-- base pedestal -->
+            <rect x="-9" y="13" width="18" height="11" rx="3" fill="#C89B40" />
+            <ellipse cx="0" cy="24" rx="13" ry="4" fill="#A87A28" />
+          </g>
+        </svg>
+      </div>
+
+      <div id="tip-section">
+        <h3>🐱 Cat appreciates a little tip...</h3>
+        <div class="tip-options">
+          <button class="tip-btn" onclick="giveTip('$10')">💵 $10</button>
+          <button class="tip-btn" onclick="giveTip('$20')">💵 $20</button>
+          <button class="tip-btn" onclick="giveTip('$50')">💰 $50</button>
+          <button class="tip-btn" onclick="giveTip('kiss')">💋 A Kiss</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reward overlay -->
+    <div id="reward">
+      <div id="reward-card">
+        <span id="reward-emoji">🎉</span>
+        <div id="reward-msg">Thank you so much!</div>
+        <div id="reward-sub">Cat is purring...</div>
+        <button id="reward-close" onclick="closeReward()">Close ✕</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
